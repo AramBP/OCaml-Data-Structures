@@ -19,22 +19,28 @@ let init n f = ref (Arr(Array.init n f))
 let rec reroot pa = match !pa with
   | Arr a -> a
   | Diff (i, v, pa') -> 
-    (*ineffciency if pa' was already rerooted in a previous call its value
-      Arr a is already stored. Therefore it is not needed to update a.(i) and pa' again
-    See Ex.1 for the complete version*)
     let a = reroot pa' in
-    let old = a.(i) in
-    a.(i) <- v;
-    pa := Arr a;
-    pa' := Diff (i, old, pa);
-    a
+    match !pa' with
+    | Arr _ -> pa := Arr a; a
+    | _ ->
+      let old = a.(i) in
+      a.(i) <- v;
+      pa := Arr a;
+      pa' := Diff (i, old, pa);
+      a
 let length pa = Array.length (reroot pa)
 let get pa i = (reroot pa).(i)
 let iteri f pa = Array.iteri f (reroot pa)
-let set pa i v = 
-  let a = reroot pa in
-  let old = a.(i) in
-  a.(i) <- v;
-  let res = ref (Arr a) in
-  pa := Diff (i, old, res);
-  res
+let set pa i v: 'a t = 
+  match !pa with 
+  | Arr a -> 
+    a.(i) <- v;
+    let res = ref (Arr a) in
+    res
+  | Diff _ ->
+    let a = reroot pa in
+    let old = a.(i) in
+    a.(i) <- v;
+    let res = ref (Arr a) in
+    pa := Diff (i, old, res);
+    res
