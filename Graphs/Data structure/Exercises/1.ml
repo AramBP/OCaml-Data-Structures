@@ -12,7 +12,7 @@ let iter_edge (f: vertex -> vertex -> unit) (g: t) : unit =
 
 let reverse (g: t): t =
   let n = nb_vertex g in
-  let gt = Array.make_matrix n n false in
+  let gt = create n in
   for i = 0 to n-1 do
     for j = 0 to n-1 do
       gt.(i).(j) <- g.(j).(i);
