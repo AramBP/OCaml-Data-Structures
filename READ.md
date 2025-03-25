@@ -1,2 +1,2 @@
 for future reference \
-Note: Incomplete
+Some implementations of chapter II & III
