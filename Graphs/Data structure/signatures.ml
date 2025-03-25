@@ -1,4 +1,3 @@
-(* Integer vertices *)
 module type Graph = sig
   type vertex = int
   type t
