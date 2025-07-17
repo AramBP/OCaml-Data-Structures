@@ -19,7 +19,7 @@ let make (n: int) (d: 'a): 'a t = {default = d; size = n; data = Array.make n d}
 let push (stack: 'a t) (value: 'a): unit =
   let new_size = stack.size + 1 in
   let a'= Array.make new_size value in
-  Array.blit stack.data 0 a' 0 stack.size;
+  Array.blit stack.data 0 a' 1 stack.size;
   stack.data <- a';
   stack.size <- new_size
 
